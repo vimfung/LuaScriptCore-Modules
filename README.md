@@ -2,7 +2,7 @@
 
 ## Foundation Framework
 
-- [Path]()
+- [Path](/wiki/Path)
 - [Encoding]()
 
 ## Network Framework
