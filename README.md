@@ -2,7 +2,7 @@
 
 ## Foundation Framework
 
-- [Path](/wiki/Path)
+- [Path](https://github.com/vimfung/LuaScriptCore-Modules/wiki/Path)
 - [Encoding]()
 
 ## Network Framework
