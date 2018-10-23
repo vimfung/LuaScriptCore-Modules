@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,7 +86,7 @@ public class HTTPTask implements LuaExportType
 
                         _curConn.connect();
 
-                        dealResponse(resultHandler, faultHandler, null);
+                        dealResponse(null, resultHandler, faultHandler, null);
                     }
                     finally
                     {
@@ -193,7 +194,7 @@ public class HTTPTask implements LuaExportType
                             os.close();
                         }
 
-                        dealResponse(resultHandler, faultHandler, null);
+                        dealResponse(null, resultHandler, faultHandler, null);
 
                     }
                     finally
@@ -345,7 +346,7 @@ public class HTTPTask implements LuaExportType
                             os.close();
                         }
 
-                        dealResponse(resultHandler, faultHandler, null);
+                        dealResponse(null, resultHandler, faultHandler, null);
 
                     }
                     finally
@@ -390,11 +391,13 @@ public class HTTPTask implements LuaExportType
     /**
      * 下载文件
      *
+     * @param filePath 保存文件的路径
      * @param resultHandler   返回回调
      * @param faultHandler    失败回调
      * @param progressHandler 下载进度回调
      */
-    public void download(final LuaFunction resultHandler,
+    public void download(final String filePath,
+                         final LuaFunction resultHandler,
                          final LuaFunction faultHandler,
                          final LuaFunction progressHandler)
     {
@@ -427,7 +430,7 @@ public class HTTPTask implements LuaExportType
 
                         _curConn.connect();
 
-                        dealResponse(resultHandler, faultHandler, progressHandler);
+                        dealResponse(filePath, resultHandler, faultHandler, progressHandler);
                     }
                     finally
                     {
@@ -552,9 +555,9 @@ public class HTTPTask implements LuaExportType
                 }
 
             }
-            else if (httpFile.path.startsWith(Path.appPath()))
+            else if (httpFile.path.startsWith(Path.app()))
             {
-                String fileName = httpFile.path.substring(Path.appPath().length() + 1);
+                String fileName = httpFile.path.substring(Path.app().length() + 1);
                 AssetFileDescriptor fd = null;
                 try
                 {
@@ -605,13 +608,13 @@ public class HTTPTask implements LuaExportType
             HTTPFile httpFile = entry.getValue();
 
             //判断是否为assets中文件
-            if (!httpFile.path.startsWith("/") || httpFile.path.startsWith(Path.appPath()))
+            if (!httpFile.path.startsWith("/") || httpFile.path.startsWith(Path.app()))
             {
                 //为assets中文件
                 String filePath = httpFile.path;
-                if (httpFile.path.startsWith(Path.appPath()))
+                if (httpFile.path.startsWith(Path.app()))
                 {
-                    filePath = httpFile.path.substring(Path.appPath().length() + 1);
+                    filePath = httpFile.path.substring(Path.app().length() + 1);
                 }
 
                 InputStream inputStream = null;
@@ -754,11 +757,14 @@ public class HTTPTask implements LuaExportType
 
     /**
      * 处理回复
+     *
+     * @param path 保存文件路径
      * @param resultHandler 返回回调
      * @param faultHandler 错误回调
      * @param downloadProgress 下载进度
      */
-    private void dealResponse(final LuaFunction resultHandler,
+    private void dealResponse(String path,
+                              final LuaFunction resultHandler,
                               final LuaFunction faultHandler,
                               final LuaFunction downloadProgress)
     {
@@ -795,6 +801,33 @@ public class HTTPTask implements LuaExportType
             }
 
             final byte[] responseData = output.toByteArray();
+
+            if (path != null)
+            {
+                //将数据写入文件
+                boolean canWrite = true;
+                File file = new File(path);
+                if (!file.exists())
+                {
+                    canWrite = file.createNewFile();
+                }
+
+                if (canWrite)
+                {
+                    FileOutputStream fileOutputStream = new FileOutputStream(file);
+                    try
+                    {
+                        fileOutputStream.write(responseData, 0, responseData.length);
+                        fileOutputStream.flush();
+                    }
+                    finally
+                    {
+                        fileOutputStream.close();
+                    }
+
+                }
+
+            }
 
             mainHandler.post(new Runnable() {
                 @Override

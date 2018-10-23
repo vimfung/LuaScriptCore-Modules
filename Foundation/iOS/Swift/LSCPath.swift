@@ -25,7 +25,7 @@ class LSCPath : NSObject, LuaExportType
     /// 获取应用目录
     ///
     /// - Returns: 路径信息
-    @objc static func appPath() -> String?
+    @objc static func app() -> String?
     {
         return Bundle.main.resourcePath;
     }
@@ -33,7 +33,7 @@ class LSCPath : NSObject, LuaExportType
     /// 获取应用沙箱根目录
     ///
     /// - Returns: 路径信息
-    @objc static func homePath() -> String?
+    @objc static func home() -> String?
     {
         return NSHomeDirectory();
     }
@@ -41,7 +41,7 @@ class LSCPath : NSObject, LuaExportType
     /// 获取文档目录
     ///
     /// - Returns: 路径信息
-    @objc static func docsPath() -> String?
+    @objc static func docs() -> String?
     {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first;
     }
@@ -49,7 +49,7 @@ class LSCPath : NSObject, LuaExportType
     /// 获取缓存目录
     ///
     /// - Returns: 路径信息
-    @objc static func cachesPath() -> String?
+    @objc static func caches() -> String?
     {
         return NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first;
     }
@@ -57,8 +57,18 @@ class LSCPath : NSObject, LuaExportType
     /// 获取临时目录
     ///
     /// - Returns: 路径信息
-    @objc static func tmpPath() -> String?
+    @objc static func tmp() -> String?
     {
         return NSTemporaryDirectory();
+    }
+    
+    
+    /// 判断指定路径是否存在
+    ///
+    /// - Parameter path: 文件路径
+    /// - Returns: True 存在，False 不存在
+    @objc static func exists(path : String) -> Bool
+    {
+        return FileManager.default.fileExists(atPath:path);
     }
 }

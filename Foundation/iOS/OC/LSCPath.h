@@ -19,28 +19,28 @@
 
  @return 路径信息
  */
-+ (NSString *)appPath;
++ (NSString *)app;
 
 /**
  应用的沙箱根目录
 
  @return 路径信息
  */
-+ (NSString *)homePath;
++ (NSString *)home;
 
 /**
  应用的文档目录
 
  @return 路径信息
  */
-+ (NSString *)docsPath;
++ (NSString *)docs;
 
 /**
  应用的缓存目录
 
  @return 路径信息
  */
-+ (NSString *)cachesPath;
++ (NSString *)caches;
 
 
 /**
@@ -48,6 +48,14 @@
 
  @return 路径信息
  */
-+ (NSString *)tmpPath;
++ (NSString *)tmp;
+
+/**
+ 判断是否存在路径
+
+ @param path 路径
+ @return YES 表示存在，NO 表示不存在
+ */
++ (BOOL)exists:(NSString *)path;
 
 @end

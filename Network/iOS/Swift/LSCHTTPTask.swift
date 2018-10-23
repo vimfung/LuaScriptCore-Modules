@@ -37,6 +37,8 @@ class LSCHTTPTask: NSObject, LuaExportType
     var _selfReference : LSCHTTPTask?;
     var _timer : Timer?;
     
+    var _filePath : String?
+    
     /// 请求地址
     @objc var url : String?
     {
@@ -156,13 +158,16 @@ class LSCHTTPTask: NSObject, LuaExportType
     /// 下载文件
     ///
     /// - Parameters:
+    ///   - filePath: 保存文件路径
     ///   - resultHandler: 返回回调
     ///   - faultHandler: 失败回调
     ///   - progressHandler: 下载进度回调
-    @objc func download(resultHandler : LuaFunction?,
+    @objc func download(filePath : String,
+                        resultHandler : LuaFunction?,
                         faultHandler : LuaFunction?,
                         progressHandler : LuaFunction?) -> Void
     {
+        _filePath = filePath;
         _resultHandler = resultHandler;
         _faultHandler = faultHandler;
         _downloadProgressHandler = progressHandler;
@@ -442,6 +447,19 @@ extension LSCHTTPTask : URLSessionDataDelegate
         }
         else
         {
+            if _filePath != nil
+            {
+                //保存数据到指定路径
+                do
+                {
+                    try _responseData?.write(to: URL(fileURLWithPath: _filePath!));
+                }
+                catch
+                {
+                    
+                }
+            }
+            
             if _resultHandler != nil
             {
                 let args : Array<LuaValue> = [LuaValue(intValue: (_response?.statusCode)!), LuaValue(dataValue: _responseData!)];

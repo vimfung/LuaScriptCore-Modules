@@ -63,15 +63,16 @@ end
 
 -- 下载文件
 -- @param url 文件的远程地址
+-- @param path 保存文件的路径
 -- @param result 返回回调，回调声明形式：function (status, data);
 -- @param fault 失败回调，回调声明形式：function (errMsg);
 -- @param progress 下传进度回调，回调声明形式：function (totalBytes, downloadedBytes);
 -- @return 任务对象
-function HTTP:download(url, result, fault, progress)
+function HTTP:download(url, path, result, fault, progress)
 	
 	local task = HTTPTask();
 	task.url = url;
-	task:download(result, fault, progress);
+	task:download(path, result, fault, progress);
 
 	return task;
 

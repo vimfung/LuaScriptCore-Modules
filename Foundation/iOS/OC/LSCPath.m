@@ -10,29 +10,34 @@
 
 @implementation LSCPath
 
-+ (NSString *)appPath
++ (NSString *)app
 {
     return [NSBundle mainBundle].resourcePath;
 }
 
-+ (NSString *)homePath
++ (NSString *)home
 {
     return NSHomeDirectory();
 }
 
-+ (NSString *)docsPath
++ (NSString *)docs
 {
     return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
 }
 
-+ (NSString *)cachesPath
++ (NSString *)caches
 {
     return NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES).firstObject;
 }
 
-+ (NSString *)tmpPath
++ (NSString *)tmp
 {
     return NSTemporaryDirectory();
+}
+
++ (BOOL)exists:(NSString *)path
+{
+    return [[NSFileManager defaultManager] fileExistsAtPath:path];
 }
 
 @end

@@ -64,10 +64,15 @@ end
 
 function HTTP_Sample_download()
 	
+	local path = Path:docs() .. "/img.jpg";
+	print (path);
+
 	HTTP:download(
 		"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1534769061065&di=32c8055b26b5054090158633e60c3e11&imgtype=0&src=http%3A%2F%2Fa.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2Fadaf2edda3cc7cd90df1ede83401213fb80e9127.jpg",
+		path,
 		function (status, data)
 		
+			print("path exists = ", Path:exists(path));
 			print("http status = ", status);
 			print("http response data = ", data);
 

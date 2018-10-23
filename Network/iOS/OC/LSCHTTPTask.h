@@ -71,13 +71,15 @@
 /**
  下载文件
 
+ @param filePath 下载文件的保存路径
  @param resultHandler 返回回调
  @param faultHandler 失败回调
  @param progressHandler 进度回调
  */
-- (void)downloadWithResultHandler:(LSCFunction *)resultHandler
-                     faultHandler:(LSCFunction *)faultHandler
-                  progressHandler:(LSCFunction *)progressHandler;
+- (void)downloadWithFilePath:(NSString *)filePath
+               resultHandler:(LSCFunction *)resultHandler
+                faultHandler:(LSCFunction *)faultHandler
+             progressHandler:(LSCFunction *)progressHandler;
 
 /**
  取消请求

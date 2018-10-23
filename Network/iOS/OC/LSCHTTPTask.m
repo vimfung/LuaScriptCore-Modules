@@ -46,6 +46,9 @@
     LSCFunction *_uploadProgressHandler;
     //下载回调
     LSCFunction *_downloadProgressHandler;
+    
+    //保存文件路径
+    NSString *_filePath;
 }
 
 @end
@@ -140,10 +143,12 @@
     [self _sendRequest];
 }
 
-- (void)downloadWithResultHandler:(LSCFunction *)resultHandler
-                     faultHandler:(LSCFunction *)faultHandler
-                  progressHandler:(LSCFunction *)progressHandler
+- (void)downloadWithFilePath:(NSString *)filePath
+               resultHandler:(LSCFunction *)resultHandler
+                faultHandler:(LSCFunction *)faultHandler
+             progressHandler:(LSCFunction *)progressHandler;
 {
+    _filePath = [filePath copy];
     _resultHandler = resultHandler;
     _faultHandler = faultHandler;
     _downloadProgressHandler = progressHandler;
@@ -484,6 +489,12 @@ didCompleteWithError:(nullable NSError *)error
     else
     {
         //请求成功
+        if (_filePath)
+        {
+            //如果设置保存路径，则将Data写入指定路径
+            [_responseData writeToFile:_filePath atomically:YES];
+        }
+        
         
         if (_resultHandler)
         {
