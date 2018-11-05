@@ -41,7 +41,7 @@ function HTTP_Sample_upload()
 
 	HTTP:upload(
 		"https://qiniu-storage.pgyer.com/apiv1/app/upload", 
-		Path:appPath() .. "/timg.jpeg", 
+		Path:app() .. "/timg.jpeg", 
 		"file", 
 		function (status, data)
 		

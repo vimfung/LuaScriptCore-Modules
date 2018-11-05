@@ -6,6 +6,9 @@ Object:typeMapping("ios", "LSCHTTPFile", "HTTPFile");
 Object:typeMapping("android", "cn.vimfung.luascriptcore.modules.network.HTTPTask", "HTTPTask");
 Object:typeMapping("android", "cn.vimfung.luascriptcore.modules.network.HTTPFile", "HTTPFile");
 
+Object:typeMapping("unity3d", "cn.vimfung.luascriptcore.modules.network.HTTPTask", "HTTPTask");
+Object:typeMapping("unity3d", "cn.vimfung.luascriptcore.modules.network.HTTPFile", "HTTPFile");
+
 Object:subclass("HTTP");
 
 -- 以GET方式发起HTTP请求
@@ -55,7 +58,10 @@ function HTTP:upload(url, filePath, fileKey, result, fault, progress)
 	local httpFile = HTTPFile();
 	httpFile.path = filePath;
 
-	task:upload({fileKey=httpFile}, nil, result, fault, progress);
+	local fileParams = {};
+	fileParams[fileKey] = httpFile;
+	
+	task:upload(fileParams, nil, result, fault, progress);
 
 	return task;
 
