@@ -43,4 +43,53 @@
     return nil;
 }
 
++ (NSString *)base64Encode:(id)data
+{
+    if (![data isKindOfClass:[NSData class]] && ![data isKindOfClass:[NSString class]])
+    {
+        return nil;
+    }
+    
+    if ([data isKindOfClass:[NSString class]])
+    {
+        data = [data dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    
+    return [data base64Encoding];
+}
+
++ (NSData *)base64Decode:(NSString *)string;
+{
+    if (![string isKindOfClass:[NSString class]])
+    {
+        return nil;
+    }
+    
+    return [[NSData alloc] initWithBase64Encoding:string];
+}
+
++ (NSString *)jsonEncode:(id)object
+{
+    if (![NSJSONSerialization isValidJSONObject:object])
+    {
+        return nil;
+    }
+    
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:object options:0 error:nil];
+
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
++ (id)jsonDecode:(NSString *)jsonString
+{
+    @try
+    {
+        return [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+    }
+    @catch (NSException *exception)
+    {
+        return nil;
+    }
+}
+
 @end

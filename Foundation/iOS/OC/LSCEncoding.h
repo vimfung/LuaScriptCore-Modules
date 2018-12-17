@@ -32,4 +32,40 @@
  */
 + (NSString *)urlDecode:(NSString *)string;
 
+
+/**
+ Base64编码
+
+ @param data 原始数据
+ @return 编码后字符串
+ */
++ (NSString *)base64Encode:(id)data;
+
+
+/**
+ Base64解码
+
+ @param string 原始字符串
+ @return 编码后字符串
+ */
++ (NSData *)base64Decode:(NSString *)string;
+
+
+/**
+ JSON编码
+
+ @param object 需要编码的对象
+ @return 编码后的JSON字符串
+ */
++ (NSString *)jsonEncode:(id)object;
+
+
+/**
+ JSON解码
+
+ @param jsonString 需要解码的JSON字符串
+ @return 解码后的对象
+ */
++ (id)jsonDecode:(NSString *)jsonString;
+
 @end
