@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using cn.vimfung.luascriptcore;
+using System;
+using MiniJSON;
 
 
 namespace cn.vimfung.luascriptcore.modules.foundation
@@ -29,6 +31,61 @@ namespace cn.vimfung.luascriptcore.modules.foundation
 		public static string urlDecode(string text)
 		{
 			return WWW.UnEscapeURL (text, System.Text.Encoding.UTF8);
+		}
+
+		/// <summary>
+		/// Base64编码
+		/// </summary>
+		/// <returns>编码后字符串</returns>
+		/// <param name="data">需要编码数据</param>
+		public static string base64Encode(object data)
+		{
+			if (data is byte[] || data is string)
+			{
+				byte[] rawData = null;
+				if (data is string)
+				{
+					rawData = System.Text.Encoding.UTF8.GetBytes (data as string);
+				}
+				else
+				{
+					rawData = data as byte[];
+				}
+
+				return Convert.ToBase64String (rawData);
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Base64解码
+		/// </summary>
+		/// <returns>解码后数据.</returns>
+		/// <param name="text">需要解码文本.</param>
+		public static byte[] base64Decode(string text)
+		{
+			return Convert.FromBase64String (text);
+		}
+
+		/// <summary>
+		/// JSON编码
+		/// </summary>
+		/// <returns>编码后JSON字符串.</returns>
+		/// <param name="obj">需要编码的对象.</param>
+		public static string jsonEncode(object obj)
+		{
+			return Json.Serialize (obj);
+		}
+
+		/// <summary>
+		/// JSON解码
+		/// </summary>
+		/// <returns>解码后对象.</returns>
+		/// <param name="text">需要解码的JSON字符串.</param>
+		public static object jsonDecode(string text)
+		{
+			return Json.Deserialize (text);
 		}
 	}
 }
