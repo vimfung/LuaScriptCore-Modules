@@ -20,8 +20,6 @@ import LuaScriptCore_OSX_Swift
 @objc(LSCHTTPFile)
 class LSCHTTPFile : NSObject, LuaExportType
 {
-    
-    
     /// 路径
     @objc var path : String?;
     
