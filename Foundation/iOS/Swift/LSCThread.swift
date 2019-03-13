@@ -22,9 +22,11 @@ import LuaScriptCore_OSX_Swift
 class LSCThread: NSObject, LuaExportType
 {
     private var _handler : LuaFunction?
+    private var _scriptController : LuaScriptController?
     
     @objc init(handler: LuaFunction)
     {
+        _scriptController = LuaScriptController();
         _handler = handler;
     }
     
@@ -37,7 +39,12 @@ class LSCThread: NSObject, LuaExportType
                 args.append(item.rawValue);
             }
             
-            _handler?.context.runThread(with: _handler, arguments: args);
+            _handler?.context.runThread(with: _handler, arguments: args, scriptController: _scriptController);
         }
+    }
+    
+    @objc func exit() -> Void
+    {
+        _scriptController?.forceExit();
     }
 }

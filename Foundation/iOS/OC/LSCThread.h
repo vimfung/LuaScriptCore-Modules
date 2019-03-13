@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class LSCScriptController;
+
 /**
  线程
  */
@@ -30,6 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param arguments 线程参数
  */
 - (void)run:(NSArray<LSCValue *> *)arguments;
+
+/**
+ 退出线程
+ */
+- (void)exit;
 
 @end
 

@@ -13,7 +13,12 @@
 /**
  方法
  */
-@property (nonatomic, strong) LSCFunction *handler;
+@property (nonatomic, strong) LSCFunction *_handler;
+
+/**
+ 执行脚本
+ */
+@property (nonatomic, strong) LSCScriptController *_scriptController;
 
 @end
 
@@ -23,7 +28,8 @@
 {
     if (self = [super init])
     {
-        self.handler = handler;
+        self._handler = handler;
+        self._scriptController = [[LSCScriptController alloc] init];
     }
     
     return self;
@@ -31,10 +37,17 @@
 
 - (void)run:(NSArray<LSCValue *> *)arguments
 {
-    if (self.handler)
+    if (self._handler)
     {
-        [self.handler.context runThreadWithFunction:self.handler arguments:arguments];
+        [self._handler.context runThreadWithFunction:self._handler
+                                           arguments:arguments
+                                    scriptController:self._scriptController];
     }
+}
+
+- (void)exit
+{
+    [self._scriptController forceExit];
 }
 
 @end
