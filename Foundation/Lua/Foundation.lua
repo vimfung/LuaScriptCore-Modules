@@ -8,3 +8,4 @@ Object:typeMapping("android", "cn.vimfung.luascriptcore.modules.foundation.Threa
 
 Object:typeMapping("unity3d", "cn.vimfung.luascriptcore.modules.foundation.Encoding", "Encoding");
 Object:typeMapping("unity3d", "cn.vimfung.luascriptcore.modules.foundation.Path", "Path");
+Object:typeMapping("unity3d", "cn.vimfung.luascriptcore.modules.foundation.Thread", "Thread");
