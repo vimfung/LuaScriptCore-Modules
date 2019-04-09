@@ -5,26 +5,28 @@ function Thread_Sample_run()
 
     local t = Thread(function ()
 
-        while(1)
-        do
-            print (a, b);
-            a = 1024;
-            b = "Hahahahahahah";
+       while(1)
+       do
+           print ("trhead1", a, b);
+           a = 1024;
+           b = "Hahahahahahah";
 
---            error("--------- error");
+       end
 
-        end
+        -- for i=1,10 do
+        --     print('thread =============', i);
+        -- end
 
     end);
 
     local t2 = Thread(function ()
 
-        -- while(1)
-        -- do
---        print ("**", a, b);
-        a = 512;
-        b = "xxxxxx";
-        -- end
+--        while(1)
+--        do
+            print ("thread2", a, b);
+            a = 512;
+            b = "xxxxxx";
+--        end
 
     end);
 
@@ -35,6 +37,10 @@ function Thread_Sample_run()
 
     t:run();
     t2:run();
+
+    for i=1,10 do
+        print('main =============', i);
+    end
 
 end
 
