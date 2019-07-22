@@ -73,6 +73,11 @@ class LSCEncoding : NSObject, LuaExportType
         return Data(base64Encoded: text);
     }
     
+    
+    /// JSON编码
+    ///
+    /// - Parameter object: 需要编码的对象
+    /// - Returns: 编码后的JSON字符串
     @objc static func jsonEncode(object : Any) -> String?
     {
         guard JSONSerialization.isValidJSONObject(object) else {
@@ -90,6 +95,11 @@ class LSCEncoding : NSObject, LuaExportType
         }
     }
     
+    
+    /// JSON解码
+    ///
+    /// - Parameter jsonString: 需要解码的JSON字符串
+    /// - Returns: 解码后的对象
     @objc static func jsonDecode(jsonString : String) -> Any?
     {
         let data : Data? = jsonString.data(using: .utf8);
@@ -106,5 +116,80 @@ class LSCEncoding : NSObject, LuaExportType
             return nil;
         }
         
+    }
+    
+    
+    /// 十六进制编码
+    ///
+    /// - Parameter data: 需要进行十六进制编码的数据
+    /// - Returns: 编码后的字符串
+    @objc static func hexEncode(data : Any) -> String?
+    {
+        guard data is Data || data is String else {
+            return nil;
+        }
+        
+        var rawData : Data? = nil;
+        
+        if data is String
+        {
+            rawData = (data as! String).data(using: .utf8);
+        }
+        else
+        {
+            rawData = data as? Data;
+        }
+        
+        return rawData?.map { String(format: "%02hhx", $0 as CVarArg) }.joined();
+    }
+    
+    /// 十六进制解码
+    ///
+    /// - Parameter string: 需要进行十六进制解码的字符串
+    /// - Returns: 解码后数据
+    @objc static func hexDecode(string : String) -> Data?
+    {
+        var bytes = [UInt8]()
+        var sum = 0
+        // 整形的 utf8 编码范围
+        let intRange = 48...57
+        // 小写 a~f 的 utf8 的编码范围
+        let lowercaseRange = 97...102
+        // 大写 A~F 的 utf8 的编码范围
+        let uppercasedRange = 65...70
+        for (index, c) in string.utf8CString.enumerated()
+        {
+            var intC = Int(c.byteSwapped)
+            if intC == 0
+            {
+                break
+            }
+            else if intRange.contains(intC)
+            {
+                intC -= 48
+            }
+            else if lowercaseRange.contains(intC)
+            {
+                intC -= 87
+            }
+            else if uppercasedRange.contains(intC)
+            {
+                intC -= 55
+            }
+            else
+            {
+                return nil;
+            }
+            sum = sum * 16 + intC
+            
+            // 每两个十六进制字母代表8位，即一个字节
+            if index % 2 != 0
+            {
+                bytes.append(UInt8(sum))
+                sum = 0
+            }
+        }
+        
+        return Data(bytes: bytes);
     }
 }

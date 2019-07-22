@@ -68,4 +68,21 @@
  */
 + (id)jsonDecode:(NSString *)jsonString;
 
+/**
+ 十六进制编码
+
+ @param data 需要转换成十六进制表示的数据
+ @return 编码后字符串
+ */
++ (NSString *)hexEncode:(id)data;
+
+
+/**
+ 十六进制解码
+
+ @param string 需要还原回数据的十六进制字符串
+ @return 解码后数据
+ */
++ (NSData *)hexDecode:(NSString *)string;
+
 @end

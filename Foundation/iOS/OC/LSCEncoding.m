@@ -92,4 +92,83 @@
     }
 }
 
++ (NSString *)hexEncode:(id)data
+{
+    if (![data isKindOfClass:[NSData class]] && ![data isKindOfClass:[NSString class]])
+    {
+        return nil;
+    }
+    
+    if ([data isKindOfClass:[NSString class]])
+    {
+        data = [data dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    
+    NSMutableString *hexStr = [NSMutableString string];
+    const char *buf = [data bytes];
+    for (int i = 0; i < [data length]; i++)
+    {
+        [hexStr appendFormat:@"%02x", buf[i] & 0xff];
+    }
+    return hexStr;
+}
+
++ (NSData *)hexDecode:(NSString *)string
+{
+    if (![string isKindOfClass:[NSString class]])
+    {
+        return nil;
+    }
+    
+    char byte = 0;
+    
+    NSString *upperString = [string uppercaseString];
+    NSMutableData *data = [NSMutableData data];
+    for (int i = 0; i < [upperString length]; i++)
+    {
+        NSInteger value = (NSInteger)[upperString characterAtIndex:i];
+        if (value >= '0' && value <= '9')
+        {
+            if (i % 2 == 0)
+            {
+                byte = ((value - '0') << 4) & 0xf0;
+                
+                if (i == [upperString length] - 1)
+                {
+                    [data appendBytes:(const void *)&byte length:1];
+                }
+            }
+            else
+            {
+                byte |= (value - '0') & 0x0f;
+                [data appendBytes:(const void *)&byte length:1];
+            }
+        }
+        else if (value >= 'A' && value <= 'F')
+        {
+            if (i % 2 == 0)
+            {
+                byte = ((value - 'A' + 10) << 4) & 0xf0;
+                
+                if (i == [upperString length] - 1)
+                {
+                    [data appendBytes:(const void *)&byte length:1];
+                }
+            }
+            else
+            {
+                byte |= (value - 'A' + 10) & 0x0f;
+                [data appendBytes:(const void *)&byte length:1];
+            }
+        }
+        else
+        {
+            data = nil;
+            break;
+        }
+    }
+    
+    return data;
+}
+
 @end
