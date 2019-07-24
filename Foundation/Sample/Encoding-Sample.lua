@@ -38,3 +38,13 @@ function Encoding_Sample_jsonDecode()
 	local obj = Encoding:jsonDecode("{\"a\":1024,\"b\":\"Hello LuaScriptCore\"}");
 	print ("a = (", obj.a, ") b = (", obj.b, ")");
 end
+
+-- 十六进制编码示例
+function Encoding_Sample_hexEncode()
+	print(Encoding:hexEncode("Hello LuaScriptCore"));
+end
+
+-- 十六进制解码示例
+function Encoding_Sample_hexDecode()
+	print(Encoding:hexDecode("48656c6c6f204c7561536372697074436f7265"));
+end

@@ -145,6 +145,65 @@ public final class Encoding implements LuaExportType
         return null;
     }
 
+    /**
+     * 十六进制编码
+     * @param data 需要转换成十六进制表示的数据
+     * @return 编码后字符串
+     */
+    public static String hexEncode(Object data)
+    {
+        if (data instanceof byte[] || data instanceof String)
+        {
+            byte[] rawData = null;
+            if (data instanceof String)
+            {
+                rawData = ((String) data).getBytes();
+            }
+            else
+            {
+                rawData = (byte[]) data;
+            }
+
+            if (rawData.length > 0)
+            {
+                final StringBuilder hexString = new StringBuilder(rawData.length * 2);
+                for (byte b : rawData)
+                {
+                    if ((b & 0xFF) < 0x10)
+                    {
+                        hexString.append("0");
+                    }
+                    hexString.append(Integer.toHexString(b & 0xFF));
+                }
+
+                return hexString.toString().toLowerCase();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * 十六进制解码
+     * @param text 需要还原回数据的十六进制字符串
+     * @return 解码后数据
+     */
+    public static byte[] hexDecode(String text)
+    {
+        text = text.toLowerCase();
+        final byte[] byteArray = new byte[text.length() / 2];
+        int k = 0;
+        for (int i = 0; i < byteArray.length; i++)
+        {
+            //因为是16进制，最多只会占用4位，转换成字节需要两个16进制的字符，高位在先
+            byte high = (byte) (Character.digit(text.charAt(k), 16) & 0xff);
+            byte low = (byte) (Character.digit(text.charAt(k + 1), 16) & 0xff);
+            byteArray[i] = (byte) (high << 4 | low);
+            k += 2;
+        }
+        return byteArray;
+    }
+
     private static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException
     {
         Map<String, Object> map = new HashMap<String, Object>();
