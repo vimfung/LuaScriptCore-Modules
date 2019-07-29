@@ -87,5 +87,47 @@ namespace cn.vimfung.luascriptcore.modules.foundation
 		{
 			return Json.Deserialize (text);
 		}
+
+		/// <summary>
+		/// 十六进制编码
+		/// </summary>
+		/// <returns>编码后字符串.</returns>
+		/// <param name="data">需要编码的数据.</param>
+		public static string hexEncode(object data)
+		{
+			if (data is byte[] || data is string)
+			{
+				byte[] rawData = null;
+				if (data is string)
+				{
+					rawData = System.Text.Encoding.UTF8.GetBytes (data as string);
+				}
+				else
+				{
+					rawData = data as byte[];
+				}
+
+				return BitConverter.ToString (rawData).Replace("-", string.Empty).ToLower();
+			}
+
+
+			return null;
+		}
+
+		/// <summary>
+		/// 十六进制解码
+		/// </summary>
+		/// <returns>解码后的数据.</returns>
+		/// <param name="text">十六进制编码字符串.</param>
+		public static byte[] hexDecode(string text)
+		{
+			byte[] result = new byte[text.Length / 2];
+			for (int x = 0; x < result.Length; x++)
+			{
+				byte i = Convert.ToByte(text.Substring(x * 2, 2), 16);
+				result[x] = (byte)i;
+			}
+			return result;
+		}
 	}
 }
