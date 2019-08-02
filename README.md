@@ -9,3 +9,7 @@
 ## Network Framework
 
 - [HTTP](https://github.com/vimfung/LuaScriptCore-Modules/wiki/HTTP)
+
+## Crypto Framework
+
+- [Crypto](https://github.com/vimfung/LuaScriptCore-Modules/wiki/Crypto)
